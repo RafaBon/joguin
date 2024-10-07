@@ -1,0 +1,93 @@
+// script.js
+
+const gameArea = document.getElementById('gameArea');
+const sheregui = document.getElementById('sheregui');
+let burroInterval;
+
+function moveSheregui(event) {
+    const mouseX = event.clientX;
+    const gameAreaWidth = gameArea.offsetWidth;
+    const shereguiWidth = sheregui.offsetWidth;
+
+    let newLeft = mouseX - shereguiWidth / 2;
+
+    if (newLeft < 0) newLeft = 0;
+    if (newLeft > gameAreaWidth - shereguiWidth) newLeft = gameAreaWidth - shereguiWidth;
+
+    sheregui.style.left = newLeft + 'px';
+}
+
+function createBurro() {
+    const burro = document.createElement('img');
+    burro.src = 'https://static.vecteezy.com/system/resources/previews/016/778/845/original/spaceship-alien-galaxy-fleet-free-png.png';
+    burro.classList.add('burro');
+    
+    // Posiciona o Burro em um local aleatório na largura da tela
+    burro.style.left = Math.random() * (gameArea.offsetWidth - 60) + 'px';
+    burro.style.top = '0px';
+    gameArea.appendChild(burro);
+
+    const burroFallInterval = setInterval(() => {
+        let burroTop = parseInt(burro.style.top || 0);
+        burroTop += 5;  // Velocidade de descida do Burro
+        burro.style.top = burroTop + 'px';
+
+        // Remove o Burro quando ele sai da tela
+        if (burroTop > gameArea.offsetHeight) {
+            clearInterval(burroFallInterval);
+            gameArea.removeChild(burro);
+        }
+    }, 30);
+}
+
+function shootCebola() {
+    const cebola = document.createElement('img');
+    cebola.src = 'https://gallery.yopriceville.com/var/resizes/Free-Clipart-Pictures/Decorative-Elements-PNG/Light_Effect_PNG_Clip_Art_Image.png?m=1629830923';
+    cebola.classList.add('cebola');
+    cebola.style.left = sheregui.offsetLeft + sheregui.offsetWidth / 24 - 24 + 'px';
+    cebola.style.top = gameArea.offsetHeight - sheregui.offsetHeight + 'px';
+    gameArea.appendChild(cebola);
+
+    const cebolaMoveInterval = setInterval(() => {
+        let cebolaTop = parseInt(cebola.style.top);
+        cebolaTop -= 25;
+        cebola.style.top = cebolaTop + 'px';
+
+        if (cebolaTop < 0) {
+            clearInterval(cebolaMoveInterval);
+            gameArea.removeChild(cebola);
+        }
+
+        const burros = document.querySelectorAll('.burro');
+        burros.forEach(burro => {
+            if (isCollision(cebola, burro)) {
+                clearInterval(cebolaMoveInterval);
+                gameArea.removeChild(cebola);
+                gameArea.removeChild(burro);
+            }
+        });
+    }, 30);
+}
+
+function isCollision(a, b) {
+    const rect1 = a.getBoundingClientRect();
+    const rect2 = b.getBoundingClientRect();
+
+    return !(
+        rect1.top > rect2.bottom ||
+        rect1.bottom < rect2.top ||
+        rect1.left > rect2.right ||
+        rect1.right < rect2.left
+    );
+}
+
+window.addEventListener('mousemove', moveSheregui);
+
+window.addEventListener('keydown', (event) => {
+    if (event.code === 'Space') {
+        shootCebola();
+    }
+});
+
+burroInterval = setInterval(createBurro, 800);
+
