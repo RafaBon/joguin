@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Shooter</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        #gameArea {
+            position: center;
+            width: 100%;
+            height: 100vh;
+            background-image: url('https://media4.giphy.com/media/fvMYGXOXM4TvJCrwIR/giphy.gif?cid=6c09b9523qtfja02z7uzzbyb9r8k2r3gsh2wswmetkw6qlfj&ep=v1_internal_gif_by_id&rid=giphy.gif&ct=g');
+            background-size: 100%;
+        }
+
+        #sheregui {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 110px;
+        }
+
+        .burro {
+            position: absolute;
+            top: 0;
+            width: 80px; /* Diminuído para 60px */
+        }
+
+        .cebola {
+            position: absolute;
+            width: 60px;
+        }
+    </style>
+</head>
+<body>
+    <div id="gameArea">
+        <img id="sheregui" src="https://attic.sh/dhiywpq2ic9ff9uevap2r4e3nlmo" alt="Sheregui">
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
